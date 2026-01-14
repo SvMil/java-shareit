@@ -1,17 +1,12 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
-//import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.item.dao.*;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.user.dao.*;
-//import ru.practicum.shareit.item.dto.ItemDto;
-//import ru.practicum.shareit.item.dto.ItemUpdateDto;
-//import ru.practicum.shareit.user.dao.UserRepository;
 
 import java.util.List;
 
