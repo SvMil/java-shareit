@@ -21,6 +21,7 @@ public class ItemMapper {
                 itemDto.getRequest()
         );
     }
+
     public static ItemDto toDto(Item item) {
         return new ItemDto(
                 item.getId(),
