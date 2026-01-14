@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
@@ -13,8 +15,8 @@ import java.util.List;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/items")
+@AllArgsConstructor
 public class ItemController {
     private final ItemService itemService;
 
