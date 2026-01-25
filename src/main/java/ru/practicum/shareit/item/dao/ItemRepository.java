@@ -23,12 +23,6 @@ public class ItemRepository {
 
     public ItemDto updateItem(Long itemId, ItemDto itemDto) {
         Item item = items.get(itemId);
-        if (itemDto.getName() != null) {
-            item.setName(itemDto.getName());
-        }
-        if (itemDto.getDescription() != null) {
-            item.setDescription(itemDto.getDescription());
-        }
         item.setAvailable(itemDto.getAvailable());
         return ItemMapper.toDto(item);
     }
