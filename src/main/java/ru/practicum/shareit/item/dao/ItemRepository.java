@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.dao;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.model.*;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class ItemRepository {
         return itemDto;
     }
 
-    public ItemDto updateItem(Long itemId, ItemDto itemDto) {
+    public ItemDto updateItem(Long itemId, ItemUpdateDto itemDto) {
         Item item = items.get(itemId);
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());

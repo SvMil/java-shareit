@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto updateItem(Long itemId, ItemDto itemDto, Long userId) {
+    public ItemDto updateItem(Long itemId, ItemUpdateDto itemDto, Long userId) {
         checkUserExists(userId);
         checkOwner(itemId, userId);
         return itemRepository.updateItem(itemId, itemDto);
