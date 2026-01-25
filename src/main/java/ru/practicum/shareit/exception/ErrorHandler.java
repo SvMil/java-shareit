@@ -16,6 +16,12 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleNotOwnerForbidden(final NotOwnerException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
