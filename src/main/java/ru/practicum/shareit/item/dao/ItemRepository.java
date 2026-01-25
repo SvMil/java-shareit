@@ -21,8 +21,8 @@ public class ItemRepository {
         return itemDto;
     }
 
-    public ItemDto updateItem(Item item) {
-
+    public ItemDto updateItem(Long itemId, ItemDto itemDto, Item item) {
+        item.setAvailable(itemDto.getAvailable());
         return ItemMapper.toDto(item);
     }
 
