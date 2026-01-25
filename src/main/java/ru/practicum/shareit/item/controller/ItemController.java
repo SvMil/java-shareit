@@ -52,7 +52,7 @@ public class ItemController {
     public ItemDto updateItem(
             @PathVariable Long itemId,
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody ItemUpdateDto itemDto
+            @Valid @RequestBody ItemDto itemDto
     ) {
         return itemService.updateItem(itemId, itemDto, userId);
     }

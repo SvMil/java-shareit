@@ -22,7 +22,7 @@ public class ItemRepository {
         return itemDto;
     }
 
-    public ItemDto updateItem(Long itemId, ItemUpdateDto itemDto) {
+    public ItemDto updateItem(Long itemId, ItemDto itemDto) {
         Item item = items.get(itemId);
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
