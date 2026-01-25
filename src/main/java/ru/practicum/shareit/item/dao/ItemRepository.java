@@ -45,9 +45,6 @@ public class ItemRepository {
     }
 
     public List<ItemDto> searchItems(String text) {
-        if (text == null || text.isBlank()) {
-            return List.of();
-        }
 
         String searchText = text.toLowerCase();
         return ItemMapper.toDto(
