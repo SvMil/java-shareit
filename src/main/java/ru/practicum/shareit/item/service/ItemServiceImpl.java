@@ -55,7 +55,8 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto.getDescription() != null) {
             item.setDescription(itemDto.getDescription());
         }
-        return itemRepository.updateItem(itemId, ItemMapper.toDto(item));
+        item.setAvailable(itemDto.getAvailable());
+        return itemRepository.updateItem(item);
     }
 
     private void checkOwner(Long itemId, Long userId) {
