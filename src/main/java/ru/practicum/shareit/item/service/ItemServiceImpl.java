@@ -6,10 +6,8 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
 import ru.practicum.shareit.item.dao.*;
 import ru.practicum.shareit.item.dto.*;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dao.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -17,7 +15,6 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    private static final HashMap<Long, Item> items = new HashMap<>();
 
     @Override
     public ItemDto getItemById(Long itemId) {
@@ -48,14 +45,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto updateItem(Long itemId, ItemDto itemDto, Long userId) {
         checkUserExists(userId);
         checkOwner(itemId, userId);
-        Item item = items.get(itemId);
-        if (itemDto.getName() != null) {
-            item.setName(itemDto.getName());
-        }
-        if (itemDto.getDescription() != null) {
-            item.setDescription(itemDto.getDescription());
-        }
-        return itemRepository.updateItem(itemId, itemDto, item);
+        return itemRepository.updateItem(itemId, itemDto);
     }
 
     private void checkOwner(Long itemId, Long userId) {
