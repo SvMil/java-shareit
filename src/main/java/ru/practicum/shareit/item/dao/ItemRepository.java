@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
@@ -7,6 +8,7 @@ import ru.practicum.shareit.item.model.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ItemRepository {
@@ -33,8 +35,14 @@ public class ItemRepository {
         return ItemMapper.toDto(item);
     }
 
-    public ItemDto getItemById(Long itemId) {
-        return ItemMapper.toDto(items.get(itemId));
+    public Optional<ItemDto> getItemById(Long itemId) {
+      //  return Optional.of(ItemMapper.toDto(items.get(itemId)));
+        try {
+            Item item = items.get(itemId);
+            return Optional.ofNullable(ItemMapper.toDto(item));
+        } catch (EmptyResultDataAccessException ignored) {
+            return Optional.empty();
+        }
     }
 
     public List<ItemDto> getItemsByUserId(Long userId) {
