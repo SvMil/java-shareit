@@ -36,7 +36,6 @@ public class ItemRepository {
     }
 
     public Optional<ItemDto> getItemById(Long itemId) {
-      //  return Optional.of(ItemMapper.toDto(items.get(itemId)));
         try {
             Item item = items.get(itemId);
             return Optional.ofNullable(ItemMapper.toDto(item));
