@@ -63,8 +63,7 @@ public class ItemRepository {
         );
     }
 
-    public boolean checkOwner(Long itemId, Long userId) {
-        Item item = items.get(itemId);
+    public boolean checkOwner(Item item, Long userId) {
         return item.getOwner().equals(userId);
     }
 }
