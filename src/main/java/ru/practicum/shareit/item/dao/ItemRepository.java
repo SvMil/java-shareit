@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.*;
@@ -36,12 +35,8 @@ public class ItemRepository {
     }
 
     public Optional<ItemDto> getItemById(Long itemId) {
-        try {
             Item item = items.get(itemId);
-            return Optional.ofNullable(ItemMapper.toDto(item));
-        } catch (NotFoundException ignored) {
-            return Optional.empty();
-        }
+            return Optional.of(ItemMapper.toDto(item));
     }
 
     public List<ItemDto> getItemsByUserId(Long userId) {
