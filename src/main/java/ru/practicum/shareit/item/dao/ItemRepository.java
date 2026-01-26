@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.model.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ItemRepository {
@@ -34,9 +33,8 @@ public class ItemRepository {
         return ItemMapper.toDto(item);
     }
 
-    public Optional<ItemDto> getItemById(Long itemId) {
-            Item item = items.get(itemId);
-            return Optional.of(ItemMapper.toDto(item));
+    public ItemDto getItemById(Long itemId) {
+        return ItemMapper.toDto(items.get(itemId));
     }
 
     public List<ItemDto> getItemsByUserId(Long userId) {
@@ -58,7 +56,8 @@ public class ItemRepository {
         );
     }
 
-    public boolean checkOwner(Item item, Long userId) {
+    public boolean checkOwner(Long itemId, Long userId) {
+        Item item = items.get(itemId);
         return item.getOwner().equals(userId);
     }
 }

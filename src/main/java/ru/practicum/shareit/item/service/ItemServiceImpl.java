@@ -6,7 +6,6 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
 import ru.practicum.shareit.item.dao.*;
 import ru.practicum.shareit.item.dto.*;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dao.*;
 
 import java.util.List;
@@ -19,9 +18,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getItemById(Long itemId) {
-        ItemDto itemDto = itemRepository.getItemById(itemId)
-                .orElseThrow(() -> new NotFoundException("itemDto с id: " + itemId + " не найден"));
-        return itemDto;
+        return itemRepository.getItemById(itemId);
     }
 
     @Override
@@ -52,8 +49,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void checkOwner(Long itemId, Long userId) {
-        Item item = ItemMapper.toEntity(getItemById(itemId));
-        if (!itemRepository.checkOwner(item, userId)) {
+        if (!itemRepository.checkOwner(itemId, userId)) {
             throw new NotOwnerException("Пользователь не является владельцем предмета");
         }
     }
