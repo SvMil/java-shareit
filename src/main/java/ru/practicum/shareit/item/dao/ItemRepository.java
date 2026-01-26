@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.*;
@@ -39,7 +40,7 @@ public class ItemRepository {
         try {
             Item item = items.get(itemId);
             return Optional.ofNullable(ItemMapper.toDto(item));
-        } catch (EmptyResultDataAccessException ignored) {
+        } catch (NotFoundException ignored) {
             return Optional.empty();
         }
     }
