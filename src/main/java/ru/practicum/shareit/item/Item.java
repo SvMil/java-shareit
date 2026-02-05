@@ -5,7 +5,6 @@ import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.booking.model.Booking;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

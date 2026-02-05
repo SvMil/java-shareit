@@ -21,6 +21,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             @Param("itemId") Long itemId,
             @Param("currentTime") LocalDateTime currentTime
     );
+
     List<Comment> findByItemIdInOrderByCreatedDesc(List<Long> itemIds);
 
     List<Comment> findByItemIdOrderByCreatedDesc(Long itemId);
