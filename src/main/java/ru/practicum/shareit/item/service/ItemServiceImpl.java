@@ -128,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
         );
 
         if (!hasBooked) {
-            throw new ValidationException("Пользователь не может прокомментировать данную вещь");
+            throw new NotFoundException("Пользователь не может прокомментировать данную вещь");
         }
 
         Comment comment = new Comment(
