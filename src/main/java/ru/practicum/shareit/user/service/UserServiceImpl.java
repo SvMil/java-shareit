@@ -18,20 +18,18 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
     @Override
     public List<UserDto> getUsers() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .toList();
+        List<User> users = userRepository.findAll();
+        return UserMapper.toDto(users);
     }
 
     @Override
     public UserDto getUserById(Long id) {
         User user = findUserById(id);
-        return userMapper.toDto(user);
+        return UserMapper.toDto(user);
     }
 
     private User findUserById(Long userId) {
@@ -54,8 +52,8 @@ public class UserServiceImpl implements UserService {
             throw new EmailAlreadyExistsException("Email пользователя уже существует");
         }
 
-        User user = userMapper.toEntity(userDto);
-        return userMapper.toDto(userRepository.save(user));
+        User user = UserMapper.toEntity(userDto);
+        return UserMapper.toDto(userRepository.save(user));
     }
 
     @Override
@@ -90,6 +88,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setName(newUserDto.getName());
         }
 
-        return userMapper.toDto(userRepository.save(existingUser));
+        return UserMapper.toDto(userRepository.save(existingUser));
     }
 }
