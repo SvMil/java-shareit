@@ -43,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if (item.getOwner().getId().equals(userId)) {
-            throw new ValidationException("Пользователь не является владельцем вещи");
+            throw new NotOwnerException("Пользователь не является владельцем вещи");
         }
 
         LocalDateTime start = bookingRequestDto.getStart();
