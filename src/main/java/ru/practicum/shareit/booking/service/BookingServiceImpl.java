@@ -59,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setItem(item);
         booking.setBooker(booker);
 
-        return bookingMapper.toDto(bookingRepository.save(booking), booker, item);
+        return bookingMapper.toDto(bookingRepository.save(booking));
     }
 
     @Override
