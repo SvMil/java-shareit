@@ -21,7 +21,6 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping("/{itemId}")
-    @ResponseStatus(HttpStatus.OK)
     public ItemDto getItemById(
             @PathVariable Long itemId
     ) {
@@ -29,13 +28,11 @@ public class ItemController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<ItemForOwnerDto> getItemsByOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
         return itemService.getItemsByOwner(ownerId);
     }
 
     @GetMapping("/search")
-    @ResponseStatus(HttpStatus.OK)
     public List<ItemDto> searchItems(
             @RequestParam String text
     ) {
@@ -52,7 +49,6 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    @ResponseStatus(HttpStatus.OK)
     public ItemDto updateItem(
             @PathVariable Long itemId,
             @RequestHeader("X-Sharer-User-Id") Long userId,
