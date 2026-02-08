@@ -10,6 +10,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
@@ -127,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
         );
 
         if (!hasBooked) {
-            throw new NotFoundException("Пользователь не может прокомментировать данную вещь");
+            throw new ValidationException("Пользователь не может прокомментировать данную вещь");
         }
 
         Comment comment = new Comment(
