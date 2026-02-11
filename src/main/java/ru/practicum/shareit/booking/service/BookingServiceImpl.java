@@ -88,6 +88,7 @@ public class BookingServiceImpl implements BookingService {
 
         boolean isBooker = booking.getBooker().getId().equals(userId);
         boolean isOwner = booking.getItem().getOwner().getId().equals(userId);
+        findUserById(userId);
 
         if (!isBooker && !isOwner) {
             throw new NotFoundException("Нет прав на просмотр бронирования");
