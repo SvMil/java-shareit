@@ -46,6 +46,10 @@ public class BookingServiceImpl implements BookingService {
             throw new NotOwnerException("Пользователь не является владельцем вещи");
         }
 
+        if (bookingRequestDto.getEnd().isBefore(bookingRequestDto.getStart())) {
+            throw new ValidationException("Некорректный интервал бронирования");
+        }
+
         LocalDateTime start = bookingRequestDto.getStart();
         LocalDateTime end = bookingRequestDto.getEnd();
 
