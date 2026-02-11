@@ -65,12 +65,13 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingResponseDto updateBookingStatus(Long bookingId, Long ownerId, boolean approved) {
-        findUserById(ownerId);
+
         Booking booking = findBookingById(bookingId);
 
         if (!booking.getItem().getOwner().getId().equals(ownerId)) {
             throw new NotOwnerException("Только владелец вещи может изменить её статус");
         }
+        findUserById(ownerId);
 
         if (booking.getStatus() != BookingStatus.WAITING) {
             throw new ValidationException("Статус не может быть изменём");
