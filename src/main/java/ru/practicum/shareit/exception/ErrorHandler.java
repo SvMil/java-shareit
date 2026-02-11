@@ -42,7 +42,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT) // ошибка 409
-    public ErrorResponse handleConflictlreadyBooking(final ItemAlreadyBooking e) {
+    public ErrorResponse handleConflictlreadyBooking(final ItemAlreadyBookingException e) {
         return new ErrorResponse(e.getMessage());
     }
 

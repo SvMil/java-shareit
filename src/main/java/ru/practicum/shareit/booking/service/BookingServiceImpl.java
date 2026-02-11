@@ -9,6 +9,7 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.exception.ItemAlreadyBookingException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
 import ru.practicum.shareit.exception.ValidationException;
@@ -57,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
                 item.getId(), start, end);
 
         if (!overlappingBookings.isEmpty()) {
-            throw new ValidationException("Вещь уже забронирована");
+            throw new ItemAlreadyBookingException("Вещь уже забронирована");
         }
 
         booking.setItem(item);
