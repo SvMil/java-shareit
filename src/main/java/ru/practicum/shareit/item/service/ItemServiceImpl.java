@@ -182,12 +182,7 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Пользователь не может прокомментировать данную вещь");
         }
 
-        Comment comment = new Comment(
-                request.getText(),
-                item,
-                author,
-                LocalDateTime.now()
-        );
+        Comment comment = commentMapper.toEntity(request, item, author);
 
         Comment savedComment = commentRepository.save(comment);
 
