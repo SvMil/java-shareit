@@ -19,4 +19,8 @@ public class CommentMapper {
                 comment.getCreated()
         );
     }
+
+    public static CommentDto toCommentReturnDto(Comment comment) {
+        return new CommentDto(comment.getId(), comment.getText(), comment.getAuthor().getName(), comment.getCreated());
+    }
 }

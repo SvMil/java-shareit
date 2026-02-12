@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking;
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
@@ -26,6 +27,10 @@ public class BookingMapper {
         booking.setEnd(bookingRequestDto.getEnd());
 
         return booking;
+    }
+
+    public BookingShortDto toBookingShortDto(Booking booking) {
+        return new BookingShortDto(booking.getId(), booking.getBooker().getId(), booking.getStart(), booking.getEnd());
     }
 
     public BookingResponseDto toDto(Booking booking) {
