@@ -28,12 +28,11 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    private final BookingMapper bookingMapper;
 
     @Override
     @Transactional
     public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, Long userId) {
-        Booking booking = bookingMapper.toEntity(bookingRequestDto);
+        Booking booking = BookingMapper.toEntity(bookingRequestDto);
 
         User booker = findUserById(userId);
 
@@ -64,7 +63,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setItem(item);
         booking.setBooker(booker);
 
-        return bookingMapper.toDto(bookingRepository.save(booking));
+        return BookingMapper.toDto(bookingRepository.save(booking));
     }
 
     @Override
@@ -84,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(approved ? BookingStatus.APPROVED : BookingStatus.REJECTED);
 
-        return bookingMapper.toDto(bookingRepository.save(booking));
+        return BookingMapper.toDto(bookingRepository.save(booking));
     }
 
     @Override
@@ -99,7 +98,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("Нет прав на просмотр бронирования");
         }
 
-        return bookingMapper.toDto(booking);
+        return BookingMapper.toDto(booking);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return bookings.stream()
-                .map(bookingMapper::toDto)
+                .map(BookingMapper::toDto)
                 .toList();
     }
 
@@ -168,7 +167,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return bookings.stream()
-                .map(bookingMapper::toDto)
+                .map(BookingMapper::toDto)
                 .toList();
     }
 

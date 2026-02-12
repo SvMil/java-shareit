@@ -35,11 +35,8 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
-    private final ItemMapper itemMapper;
-    private final BookingMapper bookingMapper;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final CommentMapper commentMapper;
     private final BookingRepository bookingRepository;
 
 
@@ -48,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findByIdWithComments(itemId)
                 .orElseThrow(() -> new NotFoundException("Предмет не найден"));
 
-        return itemMapper.toDto(item);
+        return ItemMapper.toDto(item);
     }
 
 
@@ -60,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getItemsByUserId(Long userId) {
         checkUserExists(userId);
-        return itemMapper.toDto(itemRepository.findByOwnerId(userId));
+        return ItemMapper.toDto(itemRepository.findByOwnerId(userId));
     }
 
 
@@ -111,7 +108,7 @@ public class ItemServiceImpl implements ItemService {
         return bookings.stream()
                 .filter(bookingDto -> !bookingDto.getStart().isAfter(LocalDateTime.now()))
                 .reduce((b1, b2) -> b1.getStart().isAfter(b2.getStart()) ? b1 : b2)
-                .map(bookingMapper::toBookingShortDto)
+                .map(BookingMapper::toBookingShortDto)
                 .orElse(null);
     }
 
@@ -123,7 +120,7 @@ public class ItemServiceImpl implements ItemService {
         return booking.stream()
                 .filter(bookingDto -> bookingDto.getStart().isAfter(LocalDateTime.now()))
                 .findFirst()
-                .map(bookingMapper::toBookingShortDto)
+                .map(BookingMapper::toBookingShortDto)
                 .orElse(null);
     }
 
@@ -132,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
-        return itemMapper.toDto(itemRepository.search(text));
+        return ItemMapper.toDto(itemRepository.search(text));
     }
 
     @Override
@@ -140,9 +137,9 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto addItem(ItemDto itemDto, Long userId) {
         User owner = findUserById(userId);
 
-        Item item = itemMapper.toEntity(itemDto);
+        Item item = ItemMapper.toEntity(itemDto);
         item.setOwner(owner);
-        return itemMapper.toDto(itemRepository.save(item));
+        return ItemMapper.toDto(itemRepository.save(item));
     }
 
     @Override
@@ -162,7 +159,7 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemDto.getAvailable());
         }
 
-        return itemMapper.toDto(itemRepository.save(item));
+        return ItemMapper.toDto(itemRepository.save(item));
     }
 
 
@@ -182,19 +179,19 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Пользователь не может прокомментировать данную вещь");
         }
 
-        Comment comment = commentMapper.toEntity(request, item, author);
+        Comment comment = CommentMapper.toEntity(request, item, author);
 
         Comment savedComment = commentRepository.save(comment);
 
         item.getComments().add(comment);
         itemRepository.save(item);
 
-        return commentMapper.toDto(savedComment);
+        return CommentMapper.toDto(savedComment);
     }
 
 
     private ItemForOwnerDto mapToItemDtoForOwner(Item item) {
-        ItemForOwnerDto itemDtoForOwner = itemMapper.toDtoForOwner(item);
+        ItemForOwnerDto itemDtoForOwner = ItemMapper.toDtoForOwner(item);
 
         List<Booking> bookings = bookingRepository.findByItemIdAndStatusInOrderByStartAsc(
                 item.getId(), List.of(BookingStatus.APPROVED)

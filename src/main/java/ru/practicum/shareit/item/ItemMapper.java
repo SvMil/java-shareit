@@ -1,7 +1,5 @@
 package ru.practicum.shareit.item;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -10,10 +8,10 @@ import ru.practicum.shareit.item.comment.CommentMapper;
 
 import java.util.List;
 
-@Component
+
 public class ItemMapper {
 
-    public ItemDto toDto(Item item) {
+    public static ItemDto toDto(Item item) {
         return new ItemDto(
                 item.getId(),
                 item.getName(),
@@ -21,18 +19,18 @@ public class ItemMapper {
                 item.getAvailable(),
                 item.getRequest() != null ? item.getRequest() : null,
                 item.getComments().stream()
-                        .map(commentMapper::toDto)
+                        .map(CommentMapper::toDto)
                         .toList()
         );
     }
 
-    public List<ItemDto> toDto(List<Item> items) {
+    public static List<ItemDto> toDto(List<Item> items) {
         return items.stream()
-                .map(this::toDto)
+                .map(ItemMapper::toDto)
                 .toList();
     }
 
-    public Item toEntity(ItemDto itemDto) {
+    public static Item toEntity(ItemDto itemDto) {
         return new Item(
                 itemDto.getId(),
                 itemDto.getName(),
@@ -42,7 +40,7 @@ public class ItemMapper {
         );
     }
 
-    public ItemForOwnerDto toDtoForOwner(Item item) {
+    public static ItemForOwnerDto toDtoForOwner(Item item) {
         return new ItemForOwnerDto(
                 item.getId(),
                 item.getName(),
@@ -59,12 +57,5 @@ public class ItemMapper {
                 lastBooking,
                 nextBooking,
                 comments);
-    }
-
-    private final CommentMapper commentMapper;
-
-    @Autowired
-    public ItemMapper(CommentMapper commentMapper) {
-        this.commentMapper = commentMapper;
     }
 }
