@@ -1,21 +1,20 @@
-package ru.practicum.shareit.user.controller;
+package ru.practicum.shareit.user;
 
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserUpdateDto;
-import ru.practicum.shareit.user.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.dto.UserUpdateDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -42,6 +41,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
+
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUser(
@@ -50,5 +50,4 @@ public class UserController {
     ) {
         return userService.updateUser(userId, newUserDto);
     }
-
 }
