@@ -1,16 +1,15 @@
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
+import ru.practicum.shareit.booking.dto.BookingShortDto;
+import ru.practicum.shareit.item.ItemMapper;
+import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.item.ItemMapper;
-import ru.practicum.shareit.user.UserMapper;
 
 @RequiredArgsConstructor
 public class BookingMapper {
-    private final UserMapper userMapper;
-    private final ItemMapper itemMapper;
 
     public static BookingResponseDto toDto(Booking booking) {
         BookingResponseDto bookingResponseDto = new BookingResponseDto();
@@ -23,6 +22,10 @@ public class BookingMapper {
         bookingResponseDto.setItem(ItemMapper.toDto(booking.getItem()));
 
         return bookingResponseDto;
+    }
+
+    public static BookingShortDto toBookingShortDto(Booking booking) {
+        return new BookingShortDto(booking.getId(), booking.getBooker().getId(), booking.getStart(), booking.getEnd());
     }
 
     public static Booking toEntity(BookingRequestDto bookingRequestDto) {

@@ -1,10 +1,10 @@
 package ru.practicum.shareit.item.comment;
 
-import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.Item;
+import lombok.Data;
+import jakarta.persistence.*;
 import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.item.Item;
 
 import java.time.LocalDateTime;
 

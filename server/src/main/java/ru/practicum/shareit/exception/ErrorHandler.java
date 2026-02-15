@@ -8,16 +8,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @RestControllerAdvice
 public class ErrorHandler {
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // ошибка 400
-    public ErrorResponse handleValidation(final ValidationException e) {
-        return new ErrorResponse(e.getMessage());
-    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST) // ошибка 400
     public ErrorResponse handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
         return new ErrorResponse("Ошибка валидации");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // ошибка 400
+    public ErrorResponse handleValidation(final ValidationException e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
@@ -34,13 +35,13 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT) // ошибка 409
-    public ErrorResponse handleConflict(final EmailAlreadyExistsException e) {
+    public ErrorResponse handleConflictlreadyBooking(final ItemAlreadyBookingException e) {
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT) // ошибка 409
-    public ErrorResponse handleConflictlreadyBooking(final ItemAlreadyBookingException e) {
+    public ErrorResponse handleConflict(final EmailAlreadyExistsException e) {
         return new ErrorResponse(e.getMessage());
     }
 
@@ -50,4 +51,5 @@ public class ErrorHandler {
 //        e.printStackTrace();
         return new ErrorResponse("Произошла непредвиденная ошибка");
     }
+
 }
