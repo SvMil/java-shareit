@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
-import jakarta.validation.Valid;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
@@ -43,7 +42,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto addItem(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody ItemDto itemDto
+            @RequestBody ItemDto itemDto
     ) {
         return itemService.addItem(itemDto, userId);
     }
@@ -52,7 +51,7 @@ public class ItemController {
     public ItemDto updateItem(
             @PathVariable Long itemId,
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody ItemUpdateDto itemDto
+            @RequestBody ItemUpdateDto itemDto
     ) {
         return itemService.updateItem(itemId, itemDto, userId);
     }
@@ -62,7 +61,7 @@ public class ItemController {
     public CommentDto addComment(
             @PathVariable Long itemId,
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody CreateCommentRequest request) {
+            @RequestBody CreateCommentRequest request) {
         return itemService.addComment(userId, itemId, request);
     }
 }

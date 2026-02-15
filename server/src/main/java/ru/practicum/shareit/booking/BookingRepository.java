@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId); // GET state=ALL
+    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId);
 
     List<Booking> findByBookerIdAndStatusOrderByStartDesc(Long bookerId, BookingStatus status); // GET state=WAITING/REJECTED
 

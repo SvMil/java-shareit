@@ -1,12 +1,13 @@
 package ru.practicum.shareit.booking.model;
 
 import jakarta.persistence.*;
-import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.user.User;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.item.Item;
 
 import java.time.LocalDateTime;
+
 
 @Data
 @Entity

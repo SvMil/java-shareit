@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.item.comment.CommentDto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -18,13 +16,10 @@ import java.util.ArrayList;
 public class ItemDto {
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
-    @NotNull
     private Boolean available;
     private Long request;
     private List<CommentDto> comments = new ArrayList<>();

@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -30,7 +29,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto addUser(@Valid @RequestBody UserDto userDto) {
+    public UserDto addUser(@RequestBody UserDto userDto) {
         return userService.addUser(userDto);
     }
 
@@ -46,7 +45,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUser(
             @PathVariable Long userId,
-            @Valid @RequestBody UserUpdateDto newUserDto
+            @RequestBody UserUpdateDto newUserDto
     ) {
         return userService.updateUser(userId, newUserDto);
     }
