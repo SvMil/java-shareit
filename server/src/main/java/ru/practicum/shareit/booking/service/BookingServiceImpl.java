@@ -25,9 +25,66 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
-    private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
+
+    @Override
+    @Transactional
+    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, Long userId) {
+        Booking booking = BookingMapper.toEntity(bookingRequestDto);
+
+        User booker = findUserById(userId);
+
+        Item item = findItemById(bookingRequestDto.getItemId());
+
+        if (!item.getAvailable()) {
+            throw new ValidationException("Вещь недоступна");
+        }
+
+        if (item.getOwner().getId().equals(userId)) {
+            throw new NotOwnerException("Пользователь не является владельцем вещи");
+        }
+
+        if (bookingRequestDto.getEnd().isBefore(bookingRequestDto.getStart())) {
+            throw new ValidationException("Некорректный интервал бронирования");
+        }
+
+        LocalDateTime start = bookingRequestDto.getStart();
+        LocalDateTime end = bookingRequestDto.getEnd();
+
+        List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+                item.getId(), start, end);
+
+        if (!overlappingBookings.isEmpty()) {
+            throw new ItemAlreadyBookingException("Вещь уже забронирована");
+        }
+
+        booking.setItem(item);
+        booking.setBooker(booker);
+
+        return BookingMapper.toDto(bookingRepository.save(booking));
+    }
+
+    @Override
+    @Transactional
+    public BookingResponseDto updateBookingStatus(Long bookingId, Long ownerId, boolean approved) {
+
+        Booking booking = findBookingById(bookingId);
+
+        if (!booking.getItem().getOwner().getId().equals(ownerId)) {
+            throw new NotOwnerException("Только владелец вещи может изменить её статус");
+        }
+        findUserById(ownerId);
+
+        if (booking.getStatus() != BookingStatus.WAITING) {
+            throw new ValidationException("Статус не может быть изменём");
+        }
+
+        booking.setStatus(approved ? BookingStatus.APPROVED : BookingStatus.REJECTED);
+
+        return BookingMapper.toDto(bookingRepository.save(booking));
+    }
 
     @Override
     public BookingResponseDto getBookingById(Long bookingId, Long userId) {
@@ -35,6 +92,7 @@ public class BookingServiceImpl implements BookingService {
 
         boolean isBooker = booking.getBooker().getId().equals(userId);
         boolean isOwner = booking.getItem().getOwner().getId().equals(userId);
+        findUserById(userId);
 
         if (!isBooker && !isOwner) {
             throw new NotFoundException("Нет прав на просмотр бронирования");
@@ -113,62 +171,6 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
     }
 
-    @Override
-    @Transactional
-    public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, Long userId) {
-        Booking booking = BookingMapper.toEntity(bookingRequestDto);
-
-        User booker = findUserById(userId);
-
-        Item item = findItemById(bookingRequestDto.getItemId());
-
-        if (!item.getAvailable()) {
-            throw new ValidationException("Вещь недоступна");
-        }
-
-        if (item.getOwner().getId().equals(userId)) {
-            throw new ValidationException("Пользователь не является владельцем вещи");
-        }
-
-        LocalDateTime start = bookingRequestDto.getStart();
-        LocalDateTime end = bookingRequestDto.getEnd();
-
-        List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
-                item.getId(), start, end);
-
-        if (!overlappingBookings.isEmpty()) {
-            throw new ItemAlreadyBookingException("Вещь уже забронирована");
-        }
-
-        booking.setItem(item);
-        booking.setBooker(booker);
-
-        return BookingMapper.toDto(bookingRepository.save(booking));
-    }
-
-    @Override
-    @Transactional
-    public BookingResponseDto updateBookingStatus(Long bookingId, Long ownerId, boolean approved) {
-        Booking booking = findBookingById(bookingId);
-
-        if (!booking.getItem().getOwner().getId().equals(ownerId)) {
-            throw new NotOwnerException("Только владелец вещи может изменить её статус");
-        }
-
-        if (booking.getStatus() != BookingStatus.WAITING) {
-            throw new ValidationException("Статус не может быть изменён");
-        }
-
-        booking.setStatus(approved ? BookingStatus.APPROVED : BookingStatus.REJECTED);
-
-        return BookingMapper.toDto(bookingRepository.save(booking));
-    }
-
-    private Item findItemById(Long itemId) {
-        return itemRepository.findById(itemId)
-                .orElseThrow(() -> new NotFoundException("Вещь не найдена"));
-    }
-
     private Booking findBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Бронирование не найдено"));
@@ -179,5 +181,8 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 
-
+    private Item findItemById(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new NotFoundException("Вещь не найдена"));
+    }
 }
