@@ -5,13 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.item.Item;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId);
+    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId); // GET state=ALL
 
     List<Booking> findByBookerIdAndStatusOrderByStartDesc(Long bookerId, BookingStatus status); // GET state=WAITING/REJECTED
 
@@ -53,8 +52,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("itemId") Long itemId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
-
-    List<Booking> findAllByItemInAndStatusOrderByStartAsc(List<Item> items, BookingStatus status);
 
     List<Booking> findByItemIdAndStatusInOrderByStartAsc(
             Long itemId,

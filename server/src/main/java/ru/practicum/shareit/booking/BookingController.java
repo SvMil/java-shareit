@@ -1,13 +1,12 @@
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.booking.dto.BookingRequestDto;
-import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.booking.service.StateStatus;
+import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.service.BookingService;
-
+import ru.practicum.shareit.booking.service.StateStatus;
 
 import java.util.List;
 
@@ -23,16 +22,18 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestBody BookingRequestDto bookingRequestDto
     ) {
-        return bookingService.createBooking(bookingRequestDto, userId);
+        return bookingService.createBooking(bookingRequestDto, userId); // добавление бронирования
     }
+
 
     @GetMapping("{bookingId}")
     public BookingResponseDto getBooking(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @PathVariable Long bookingId
     ) {
-        return bookingService.getBookingById(bookingId, userId);
+        return bookingService.getBookingById(bookingId, userId); // получение данных о конкретном бронировании
     }
+
 
     @GetMapping("owner")
     public List<BookingResponseDto> getOwnerBookings(
@@ -41,6 +42,7 @@ public class BookingController {
     ) {
         return bookingService.getOwnerBookings(userId, state);
     }
+
 
     @GetMapping
     public List<BookingResponseDto> getUserBookings(
@@ -56,6 +58,9 @@ public class BookingController {
             @PathVariable Long bookingId,
             @RequestParam boolean approved
     ) {
-        return bookingService.updateBookingStatus(bookingId, userId, approved);
+        return bookingService.updateBookingStatus(bookingId, userId, approved); // подтверждение/отклонение запроса
     }
+
+
+
 }

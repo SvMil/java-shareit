@@ -1,11 +1,10 @@
 package ru.practicum.shareit.item.comment;
 
-import lombok.NoArgsConstructor;
-import lombok.Data;
 import jakarta.persistence.*;
-import ru.practicum.shareit.user.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.Item;
-
+import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
 
@@ -33,9 +32,9 @@ public class Comment {
     private LocalDateTime created;
 
     public Comment(String text, Item item, User author, LocalDateTime now) {
+        this.text = text;
         this.item = item;
         this.author = author;
         this.created = now;
-        this.text = text;
     }
 }

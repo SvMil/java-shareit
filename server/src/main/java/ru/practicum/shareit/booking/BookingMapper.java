@@ -1,37 +1,37 @@
 package ru.practicum.shareit.booking;
 
-import ru.practicum.shareit.booking.dto.BookingShortDto;
-import ru.practicum.shareit.item.ItemMapper;
-import ru.practicum.shareit.user.UserMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.item.ItemMapper;
+import ru.practicum.shareit.user.UserMapper;
 
-
+@Component
+@RequiredArgsConstructor
 public class BookingMapper {
+    private final UserMapper userMapper;
+    private final ItemMapper itemMapper;
 
-    public static Booking toEntity(BookingRequestDto bookingRequestDto) {
-        Booking booking = new Booking();
-        booking.setStart(bookingRequestDto.getStart());
-        booking.setEnd(bookingRequestDto.getEnd());
-
-        return booking;
-    }
-
-    public static BookingShortDto toBookingShortDto(Booking booking) {
-        return new BookingShortDto(booking.getId(), booking.getBooker().getId(), booking.getStart(), booking.getEnd());
-    }
-
-    public static BookingResponseDto toDto(Booking booking) {
+    public BookingResponseDto toDto(Booking booking) {
         BookingResponseDto bookingResponseDto = new BookingResponseDto();
         bookingResponseDto.setId(booking.getId());
         bookingResponseDto.setStart(booking.getStart());
         bookingResponseDto.setEnd(booking.getEnd());
         bookingResponseDto.setStatus(booking.getStatus());
 
-        bookingResponseDto.setBooker(UserMapper.toDto(booking.getBooker()));
-        bookingResponseDto.setItem(ItemMapper.toDto(booking.getItem()));
+        bookingResponseDto.setBooker(userMapper.toDto(booking.getBooker()));
+        bookingResponseDto.setItem(itemMapper.toDto(booking.getItem()));
 
         return bookingResponseDto;
+    }
+
+    public Booking toEntity(BookingRequestDto bookingRequestDto) {
+        Booking booking = new Booking();
+        booking.setStart(bookingRequestDto.getStart());
+        booking.setEnd(bookingRequestDto.getEnd());
+
+        return booking;
     }
 }

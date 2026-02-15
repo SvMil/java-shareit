@@ -1,47 +1,41 @@
 package ru.practicum.shareit.item;
 
-import ru.practicum.shareit.booking.dto.BookingShortDto;
-import ru.practicum.shareit.item.comment.CommentDto;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemForOwnerDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.comment.CommentMapper;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemFullResponseDto;
+import ru.practicum.shareit.request.ItemRequestMapper;
 
 import java.util.List;
 
-
+@Component
+@RequiredArgsConstructor
 public class ItemMapper {
+    private final CommentMapper commentMapper;
+    private final ItemRequestMapper itemRequestMapper;
 
-    public static ItemDto toDto(Item item) {
+    public ItemDto toDto(Item item) {
         return new ItemDto(
                 item.getId(),
                 item.getName(),
                 item.getDescription(),
                 item.getAvailable(),
-                item.getRequest() != null ? item.getRequest() : null,
+                item.getRequestId(),
                 item.getComments().stream()
-                        .map(CommentMapper::toDto)
+                        .map(commentMapper::toDto)
                         .toList()
         );
     }
 
-    public static List<ItemDto> toDto(List<Item> items) {
+    public List<ItemDto> toDto(List<Item> items) {
         return items.stream()
-                .map(ItemMapper::toDto)
+                .map(this::toDto)
                 .toList();
     }
 
-    public static Item toEntity(ItemDto itemDto) {
-        return new Item(
-                itemDto.getId(),
-                itemDto.getName(),
-                itemDto.getDescription(),
-                itemDto.getAvailable(),
-                itemDto.getRequest()
-        );
-    }
-
-    public static ItemForOwnerDto toDtoForOwner(Item item) {
-        return new ItemForOwnerDto(
+    public ItemFullResponseDto toDtoForOwner(Item item) {
+        return new ItemFullResponseDto(
                 item.getId(),
                 item.getName(),
                 item.getDescription(),
@@ -49,13 +43,13 @@ public class ItemMapper {
         );
     }
 
-    public static ItemForOwnerDto toItemReturnDto(Item item, BookingShortDto lastBooking, BookingShortDto nextBooking, List<CommentDto> comments) {
-        return new ItemForOwnerDto(item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable(),
-                lastBooking,
-                nextBooking,
-                comments);
+    public Item toEntity(ItemDto itemDto) {
+        return new Item(
+                itemDto.getId(),
+                itemDto.getName(),
+                itemDto.getDescription(),
+                itemDto.getAvailable(),
+                itemDto.getRequestId()
+        );
     }
 }

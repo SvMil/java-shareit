@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.exception.ItemAlreadyBookingException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotOwnerException;
 import ru.practicum.shareit.exception.ValidationException;
@@ -28,11 +27,12 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final BookingMapper bookingMapper;
 
     @Override
     @Transactional
     public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto, Long userId) {
-        Booking booking = BookingMapper.toEntity(bookingRequestDto);
+        Booking booking = bookingMapper.toEntity(bookingRequestDto);
 
         User booker = findUserById(userId);
 
@@ -43,11 +43,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if (item.getOwner().getId().equals(userId)) {
-            throw new NotOwnerException("Пользователь не является владельцем вещи");
-        }
-
-        if (bookingRequestDto.getEnd().isBefore(bookingRequestDto.getStart())) {
-            throw new ValidationException("Некорректный интервал бронирования");
+            throw new ValidationException("Пользователь не является владельцем вещи");
         }
 
         LocalDateTime start = bookingRequestDto.getStart();
@@ -57,33 +53,31 @@ public class BookingServiceImpl implements BookingService {
                 item.getId(), start, end);
 
         if (!overlappingBookings.isEmpty()) {
-            throw new ItemAlreadyBookingException("Вещь уже забронирована");
+            throw new ValidationException("Вещь уже забронирована");
         }
 
         booking.setItem(item);
         booking.setBooker(booker);
 
-        return BookingMapper.toDto(bookingRepository.save(booking));
+        return bookingMapper.toDto(bookingRepository.save(booking));
     }
 
     @Override
     @Transactional
     public BookingResponseDto updateBookingStatus(Long bookingId, Long ownerId, boolean approved) {
-
         Booking booking = findBookingById(bookingId);
 
         if (!booking.getItem().getOwner().getId().equals(ownerId)) {
             throw new NotOwnerException("Только владелец вещи может изменить её статус");
         }
-        findUserById(ownerId);
 
         if (booking.getStatus() != BookingStatus.WAITING) {
-            throw new ValidationException("Статус не может быть изменём");
+            throw new ValidationException("Статус не может быть изменён");
         }
 
         booking.setStatus(approved ? BookingStatus.APPROVED : BookingStatus.REJECTED);
 
-        return BookingMapper.toDto(bookingRepository.save(booking));
+        return bookingMapper.toDto(bookingRepository.save(booking));
     }
 
     @Override
@@ -92,13 +86,12 @@ public class BookingServiceImpl implements BookingService {
 
         boolean isBooker = booking.getBooker().getId().equals(userId);
         boolean isOwner = booking.getItem().getOwner().getId().equals(userId);
-        findUserById(userId);
 
         if (!isBooker && !isOwner) {
             throw new NotFoundException("Нет прав на просмотр бронирования");
         }
 
-        return BookingMapper.toDto(booking);
+        return bookingMapper.toDto(booking);
     }
 
     @Override
@@ -132,7 +125,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return bookings.stream()
-                .map(BookingMapper::toDto)
+                .map(bookingMapper::toDto)
                 .toList();
     }
 
@@ -167,7 +160,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return bookings.stream()
-                .map(BookingMapper::toDto)
+                .map(bookingMapper::toDto)
                 .toList();
     }
 

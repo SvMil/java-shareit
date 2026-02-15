@@ -8,14 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-
-
-    @Query("SELECT i FROM Item i " +
-            "LEFT JOIN FETCH i.comments " +
-            "WHERE i.id = :id")
-    Optional<Item> findByIdWithComments(@Param("id") Long id);
+    boolean existsById(Long id);
 
     List<Item> findByOwnerId(Long ownerId);
+
+    List<Item> findByRequestId(Long requestId);
 
     @Query("SELECT i FROM Item i " +
             "WHERE i.available = true " +
@@ -23,5 +20,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "OR LOWER(i.description) LIKE LOWER(CONCAT('%', :text, '%')))")
     List<Item> search(@Param("text") String text);
 
-    boolean existsById(Long id);
+    @Query("SELECT i FROM Item i " +
+            "LEFT JOIN FETCH i.comments " +
+            "WHERE i.id = :id")
+    Optional<Item> findByIdWithComments(@Param("id") Long id);
 }
