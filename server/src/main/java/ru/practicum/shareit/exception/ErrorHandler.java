@@ -39,6 +39,12 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT) // ошибка 409
+    public ErrorResponse handleConflictlreadyBooking(final ItemAlreadyBookingException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // ошибка 500
     public ErrorResponse handleThrowable(final Throwable e) {
 //        e.printStackTrace();

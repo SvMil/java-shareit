@@ -1,21 +1,16 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemFullResponseDto;
-import ru.practicum.shareit.request.ItemRequestMapper;
 
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
 public class ItemMapper {
-    private final CommentMapper commentMapper;
-    private final ItemRequestMapper itemRequestMapper;
 
-    public ItemDto toDto(Item item) {
+    public static ItemDto toDto(Item item) {
         return new ItemDto(
                 item.getId(),
                 item.getName(),
@@ -23,18 +18,18 @@ public class ItemMapper {
                 item.getAvailable(),
                 item.getRequestId(),
                 item.getComments().stream()
-                        .map(commentMapper::toDto)
+                        .map(CommentMapper::toDto)
                         .toList()
         );
     }
 
-    public List<ItemDto> toDto(List<Item> items) {
+    public static List<ItemDto> toDto(List<Item> items) {
         return items.stream()
-                .map(this::toDto)
+                .map(ItemMapper::toDto)
                 .toList();
     }
 
-    public ItemFullResponseDto toDtoForOwner(Item item) {
+    public static ItemFullResponseDto toDtoForOwner(Item item) {
         return new ItemFullResponseDto(
                 item.getId(),
                 item.getName(),
@@ -43,7 +38,7 @@ public class ItemMapper {
         );
     }
 
-    public Item toEntity(ItemDto itemDto) {
+    public static Item toEntity(ItemDto itemDto) {
         return new Item(
                 itemDto.getId(),
                 itemDto.getName(),

@@ -22,7 +22,6 @@ import java.util.List;
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
-    private final ItemRequestMapper itemRequestMapper;
     private final ItemRepository itemRepository;
 
     @Override
@@ -30,36 +29,36 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     public ItemRequestDto createRequest(Long userId, ItemRequestDto requestDto) {
         User user = findUserById(userId);
 
-        ItemRequest itemRequest = itemRequestMapper.toEntity(requestDto);
+        ItemRequest itemRequest = ItemRequestMapper.toEntity(requestDto);
         itemRequest.setRequestor(user);
         itemRequest.setCreated(LocalDateTime.now());
 
-        return itemRequestMapper.toDto(itemRequestRepository.save(itemRequest));
+        return ItemRequestMapper.toDto(itemRequestRepository.save(itemRequest));
     }
 
     @Override
     public List<ItemRequestDto> getRequests(Long userId) {
         findUserById(userId);
 
-        return itemRequestMapper.toDto(itemRequestRepository.findByRequestorIdOrderByCreatedDesc(userId));
+        return ItemRequestMapper.toDto(itemRequestRepository.findByRequestorIdOrderByCreatedDesc(userId));
     }
 
     @Override
     public List<ItemRequestDto> getAllRequests(Long userId) {
         findUserById(userId);
 
-        return itemRequestMapper.toDto(itemRequestRepository.findByRequestorIdNotOrderByCreatedDesc(userId));
+        return ItemRequestMapper.toDto(itemRequestRepository.findByRequestorIdNotOrderByCreatedDesc(userId));
     }
 
     @Override
     public ItemRequestDto getRequestById(Long userId, Long requestId) {
         findUserById(userId);
 
-        ItemRequestDto dto = itemRequestMapper.toDto(findItemRequestById(requestId));
+        ItemRequestDto dto = ItemRequestMapper.toDto(findItemRequestById(requestId));
 
         List<Item> items = itemRepository.findByRequestId(requestId);
 
-        dto.setItems(itemRequestMapper.toShortDto(items));
+        dto.setItems(ItemRequestMapper.toShortDto(items));
 
         return dto;
     }

@@ -35,8 +35,6 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
-    private final CommentMapper commentMapper;
-    private final ItemMapper itemMapper;
     private final ItemRequestService itemRequestService;
 
     @Override
@@ -54,14 +52,14 @@ public class ItemServiceImpl implements ItemService {
 
         User owner = findUserById(userId);
 
-        Item item = itemMapper.toEntity(itemDto);
+        Item item = ItemMapper.toEntity(itemDto);
         item.setOwner(owner);
 
         if (item.getRequestId() != null) {
             item.setRequestId(item.getRequestId());
         }
 
-        return itemMapper.toDto(itemRepository.save(item));
+        return ItemMapper.toDto(itemRepository.save(item));
     }
 
     @Override
@@ -81,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemDto.getAvailable());
         }
 
-        return itemMapper.toDto(itemRepository.save(item));
+        return ItemMapper.toDto(itemRepository.save(item));
     }
 
     @Override
@@ -89,13 +87,13 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findByIdWithComments(itemId)
                 .orElseThrow(() -> new NotFoundException("Предмет не найден"));
 
-        return itemMapper.toDto(item);
+        return ItemMapper.toDto(item);
     }
 
     @Override
     public List<ItemDto> getItemsByUserId(Long userId) {
         checkUserExists(userId);
-        return itemMapper.toDto(itemRepository.findByOwnerId(userId));
+        return ItemMapper.toDto(itemRepository.findByOwnerId(userId));
     }
 
     @Override
@@ -103,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
-        return itemMapper.toDto(itemRepository.search(text));
+        return ItemMapper.toDto(itemRepository.search(text));
     }
 
     @Override
@@ -144,7 +142,7 @@ public class ItemServiceImpl implements ItemService {
         item.getComments().add(comment);
         itemRepository.save(item);
 
-        return commentMapper.toDto(savedComment);
+        return CommentMapper.toDto(savedComment);
     }
 
     private void checkUserExists(Long userId) {
@@ -160,7 +158,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private ItemFullResponseDto mapToItemDtoForOwner(Item item) {
-        ItemFullResponseDto itemDtoForOwner = itemMapper.toDtoForOwner(item);
+        ItemFullResponseDto itemDtoForOwner = ItemMapper.toDtoForOwner(item);
 
         List<Booking> bookings = bookingRepository.findByItemIdAndStatusInOrderByStartAsc(
                 item.getId(), List.of(BookingStatus.APPROVED)
