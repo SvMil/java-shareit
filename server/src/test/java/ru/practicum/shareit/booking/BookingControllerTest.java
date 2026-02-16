@@ -87,6 +87,22 @@ class BookingControllerTest {
                 .getContentAsString();
 
         assertEquals(objectMapper.writeValueAsString(bookingForTests), result);
+
+    }
+
+    @SneakyThrows
+    @Test
+    void getBookingInfo() {
+        when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(bookingForTests);
+
+        String result = mockMvc.perform(get("/bookings/1")
+                        .header("X-Sharer-User-Id", "123"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(objectMapper.writeValueAsString(bookingForTests), result);
     }
 
 
