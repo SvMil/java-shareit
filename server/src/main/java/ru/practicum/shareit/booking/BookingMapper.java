@@ -7,7 +7,7 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.model.Booking;
 
-public class BookingMapper {
+public final class BookingMapper {
 
     public static BookingResponseDto toDto(Booking booking) {
         BookingResponseDto bookingResponseDto = new BookingResponseDto();
