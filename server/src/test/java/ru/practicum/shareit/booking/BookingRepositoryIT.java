@@ -65,44 +65,6 @@ class BookingRepositoryIT {
         bookingRepository.deleteAll();
     }
 
-
-   /* @Test
-    void findAllByBookerForFuture() {
-        List<Booking> all = bookingRepository.findAllByBookerForFuture(userForTests, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllByBookerOrderByStartDesc() {
-        List<Booking> all = bookingRepository.findAllByBookerOrderByStartDesc(userForTests, PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllByBookerAndStatusOrderByStartDesc() {
-        List<Booking> all = bookingRepository.findAllByBookerAndStatusOrderByStartDesc(userForTests, BookingStatus.WAITING, PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllByOwnerForFuture() {
-        List<Booking> all = bookingRepository.findAllByOwnerForFuture(userForTests, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllByOwnerOrderByStartDesc() {
-        List<Booking> all = bookingRepository.findAllByOwnerOrderByStartDesc(userForTests, PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    */
-
     @Test
     void findAllByOwnerAndStatusOrderByStartDesc() {
         List<Booking> all = bookingRepository.findByBookerIdOrderByStartDesc(userForTests.getId());
@@ -117,47 +79,4 @@ class BookingRepositoryIT {
         assertEquals(userForTests, all.get(0).getBooker());
     }
 
-  /*  @Test
-    void findAllByItemAndStatusOrderByStartAsc() {
-        List<Booking> all = bookingRepository.findAllByItemAndStatusOrderByStartAsc(itemForTests, BookingStatus.WAITING);
-        assertEquals(1, all.size());
-        assertEquals(userForTests, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllByBookerAndItemAndStatus() {
-        List<Booking> all = bookingRepository.findAllByBookerAndItemAndStatus(userForTests2, itemForTests2, LocalDateTime.now());
-        assertEquals(1, all.size());
-        assertEquals(userForTests2, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllCurrentBookingsByBooker() {
-        List<Booking> all = bookingRepository.findAllCurrentBookingsByBooker(userForTests2, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests2, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllCurrentBookingsByOwner() {
-        List<Booking> all = bookingRepository.findAllCurrentBookingsByOwner(userForTests2, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests2, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllPastBookingsByBooker() {
-        List<Booking> all = bookingRepository.findAllPastBookingsByBooker(userForTests2, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests2, all.get(0).getBooker());
-    }
-
-    @Test
-    void findAllPastBookingsByOwner() {
-        List<Booking> all = bookingRepository.findAllPastBookingsByOwner(userForTests2, LocalDateTime.now(), PageRequest.of(0, 10));
-        assertEquals(1, all.size());
-        assertEquals(userForTests2, all.get(0).getBooker());
-    }
-
-   */
 }
