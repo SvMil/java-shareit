@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 @Data
 @NoArgsConstructor
