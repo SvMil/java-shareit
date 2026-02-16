@@ -1,18 +1,18 @@
 package ru.practicum.shareit.item;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsById(Long id);
 
-    List<Item> findByOwnerId(Long ownerId);
-
     List<Item> findByRequestId(Long requestId);
+
+    List<Item> findByOwnerId(Long ownerId);
 
     @Query("SELECT i FROM Item i " +
             "WHERE i.available = true " +
