@@ -42,7 +42,7 @@ public class ItemMapper {
     }
 
     public static ItemFullResponseDto toDtoForOwner(Item item) {
-        return new ItemFullResponseDto (
+        return new ItemFullResponseDto(
                 item.getId(),
                 item.getName(),
                 item.getDescription(),
