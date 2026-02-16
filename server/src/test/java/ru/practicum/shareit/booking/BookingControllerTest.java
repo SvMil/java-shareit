@@ -10,9 +10,11 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.practicum.shareit.booking.service.StateStatus;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -104,6 +106,43 @@ class BookingControllerTest {
 
         assertEquals(objectMapper.writeValueAsString(bookingForTests), result);
     }
+
+    @SneakyThrows
+    @Test
+    void getBookingInfoList() {
+        List<BookingResponseDto> bookingsDto = List.of(bookingForTests);
+
+        when(bookingService.getUserBookings(anyLong(), any(StateStatus.class))).thenReturn(bookingsDto);
+
+        String result = mockMvc.perform(get("/bookings")
+                        .header("X-Sharer-User-Id", "123"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(objectMapper.writeValueAsString(bookingsDto), result);
+    }
+
+    @SneakyThrows
+    @Test
+    void getOwnerBookings() {
+
+        List<BookingResponseDto> bookingsDto = List.of(bookingForTests);
+
+        when(bookingService.getOwnerBookings(anyLong(), any(StateStatus.class))).thenReturn(bookingsDto);
+
+        String result = mockMvc.perform(get("/bookings/owner")
+                        .header("X-Sharer-User-Id", "123"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(objectMapper.writeValueAsString(bookingsDto), result);
+    }
+
+
 
 
 }
