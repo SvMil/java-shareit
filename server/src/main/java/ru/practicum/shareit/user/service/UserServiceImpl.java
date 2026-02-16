@@ -20,6 +20,20 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+
+    @Override
+    public List<UserDto> getUsers() {
+        return userRepository.findAll().stream()
+                .map(UserMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        User user = findUserById(id);
+        return UserMapper.toDto(user);
+    }
+
     @Override
     @Transactional
     public UserDto addUser(UserDto userDto) {
@@ -37,6 +51,15 @@ public class UserServiceImpl implements UserService {
 
         User user = UserMapper.toEntity(userDto);
         return UserMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("Пользователь не найден");
+        }
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -63,28 +86,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserMapper.toDto(userRepository.save(existingUser));
-    }
-
-    @Override
-    @Transactional
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException("Пользователь не найден");
-        }
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public UserDto getUserById(Long id) {
-        User user = findUserById(id);
-        return UserMapper.toDto(user);
-    }
-
-    @Override
-    public List<UserDto> getUsers() {
-        return userRepository.findAll().stream()
-                .map(UserMapper::toDto)
-                .toList();
     }
 
     private User findUserById(Long userId) {

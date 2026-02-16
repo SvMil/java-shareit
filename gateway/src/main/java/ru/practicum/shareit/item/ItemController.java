@@ -1,23 +1,24 @@
 package ru.practicum.shareit.item;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import ru.practicum.shareit.item.dto.CommentRequestDto;
+import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.CommentRequestDto;
+
 
 
 @Controller
-@RequestMapping(path = "/items")
-@RequiredArgsConstructor
 @Slf4j
+@RequestMapping(path = "/items")
 @Validated
+@RequiredArgsConstructor
 public class ItemController {
     private final ItemClient itemClient;
     private static final String USER_ID_HEADER = "X-Sharer-User-Id";

@@ -1,20 +1,32 @@
 package ru.practicum.shareit.request;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/requests")
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class ItemRequestController {
 
     private final ItemRequestClient itemRequestClient;
 
+    @GetMapping("/{requestId}")
+    public ResponseEntity<Object> getById(@PathVariable Long requestId,
+                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("Get item request {}, userId={}", requestId, userId);
+        return itemRequestClient.getById(requestId, userId);
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getByRequestor(@RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("Get item requests for user {}", userId);
+        return itemRequestClient.getByRequestor(userId);
+    }
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
@@ -24,23 +36,10 @@ public class ItemRequestController {
         return itemRequestClient.getAll(userId, from, size);
     }
 
-    @GetMapping("/{requestId}")
-    public ResponseEntity<Object> getById(@PathVariable Long requestId,
-                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
-        log.info("Get item request {}, userId={}", requestId, userId);
-        return itemRequestClient.getById(requestId, userId);
-    }
-
     @PostMapping
     public ResponseEntity<Object> create(@Valid @RequestBody ItemRequestDto itemRequestDto,
                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Creating item request {}, userId={}", itemRequestDto, userId);
         return itemRequestClient.create(itemRequestDto, userId);
-    }
-
-    @GetMapping
-    public ResponseEntity<Object> getByRequestor(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        log.info("Get item requests for user {}", userId);
-        return itemRequestClient.getByRequestor(userId);
     }
 }
