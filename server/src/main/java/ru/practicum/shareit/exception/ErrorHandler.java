@@ -10,18 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public class ErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // ошибка 400
-    public ErrorResponse handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
-        return new ErrorResponse("Ошибка валидации");
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST) // ошибка 400
-    public ErrorResponse handleValidation(final ValidationException e) {
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN) // ошибка 403
     public ErrorResponse handleNotOwner(final NotOwnerException e) {
         return new ErrorResponse(e.getMessage());
