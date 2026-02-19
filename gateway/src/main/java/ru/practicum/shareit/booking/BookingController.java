@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import ru.practicum.shareit.booking.dto.BookingState;
