@@ -21,7 +21,7 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @PathVariable Long bookingId
     ) {
-        return bookingService.getBookingById(bookingId, userId); // получение данных о конкретном бронировании
+        return bookingService.getBookingById(bookingId, userId);
     }
 
     @GetMapping("owner")

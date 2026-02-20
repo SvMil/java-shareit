@@ -44,7 +44,7 @@ class BookingControllerTest {
 
     @SneakyThrows
     @Test
-    void getBookingById() {
+    void getBooking() {
         when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(bookingForTests);
 
         String result = mockMvc.perform(get("/bookings/1")
@@ -59,7 +59,7 @@ class BookingControllerTest {
 
     @SneakyThrows
     @Test
-    void createBooking_whenSuccess() {
+    void createBooking() {
         BookingRequestDto bookingSaveDto = new BookingRequestDto(1L, LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(6));
         when(bookingService.createBooking(any(BookingRequestDto.class), anyLong())).thenReturn(bookingForTests);
 
@@ -94,22 +94,7 @@ class BookingControllerTest {
 
     @SneakyThrows
     @Test
-    void getBookingInfo() {
-        when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(bookingForTests);
-
-        String result = mockMvc.perform(get("/bookings/1")
-                        .header("X-Sharer-User-Id", "123"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        assertEquals(objectMapper.writeValueAsString(bookingForTests), result);
-    }
-
-    @SneakyThrows
-    @Test
-    void getBookingInfoList() {
+    void getUserBookings() {
         List<BookingResponseDto> bookingsDto = List.of(bookingForTests);
 
         when(bookingService.getUserBookings(anyLong(), any(StateStatus.class))).thenReturn(bookingsDto);
@@ -141,8 +126,4 @@ class BookingControllerTest {
 
         assertEquals(objectMapper.writeValueAsString(bookingsDto), result);
     }
-
-
-
-
 }
