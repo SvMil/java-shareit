@@ -153,7 +153,7 @@ class ItemServiceIntegrationTest {
         ru.practicum.shareit.request.ItemRequestDto request =
                 itemRequestService.createRequest(owner.getId(), requestDto);
 
-        ItemDto itemDto = new ItemDto(null, "Коньки", "Удобные, немного большемерят", true, request.getId(), null );
+        ItemDto itemDto = new ItemDto(null, "Коньки", "Удобные, немного большемерят", true, request.getId(), null);
         ItemDto result = itemService.addItem(itemDto, owner.getId());
 
         assertNotNull(result);
