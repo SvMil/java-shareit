@@ -51,7 +51,7 @@ class ItemRequestControllerTest {
 
 
    @SneakyThrows
-    @Test
+   @Test
     void saveRequest() {
         when(itemRequestService.createRequest(anyLong(), any(ItemRequestDto.class))).thenReturn(itemRequestForTests);
 
@@ -67,7 +67,7 @@ class ItemRequestControllerTest {
         assertEquals(objectMapper.writeValueAsString(itemRequestForTests), result);
     }
 
-     @SneakyThrows
+    @SneakyThrows
     @Test
     void getRequests() {
         List<ItemRequestDto> allRequests = List.of(itemRequestForTests);
