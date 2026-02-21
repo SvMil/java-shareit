@@ -1,6 +1,9 @@
 package ru.practicum.shareit.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.item.dto.ItemShortResponseDto;
 
 import java.time.LocalDateTime;
@@ -8,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemRequestDto {
     private Long id;
     private String description;
