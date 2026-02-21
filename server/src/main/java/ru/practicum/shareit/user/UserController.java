@@ -1,0 +1,46 @@
+package ru.practicum.shareit.user;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserUpdateDto;
+import ru.practicum.shareit.user.service.UserService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "/users")
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+
+    @GetMapping("/{id}")
+    public UserDto getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping
+    public List<UserDto> getUsers() {
+        return userService.getUsers();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto addUser(@RequestBody UserDto userDto) {
+        return userService.addUser(userDto);
+    }
+
+    @PatchMapping("/{userId}")
+    public UserDto updateUser(
+            @PathVariable Long userId,
+            @RequestBody UserUpdateDto newUserDto
+    ) {
+        return userService.updateUser(userId, newUserDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+}
