@@ -104,7 +104,7 @@ class ItemRequestServiceIntegrationTest {
 
         ItemDto itemDto = new ItemDto(null, "Дрель", "Мощная дрель", true, request.getId(), null);
         itemService.addItem(itemDto, owner.getId());
-        ItemRequestDto result = itemRequestService.getRequestById( owner.getId(), request.getId());
+        ItemRequestDto result = itemRequestService.getRequestById(owner.getId(), request.getId());
 
         assertNotNull(result);
         assertEquals(request.getId(), result.getId());
