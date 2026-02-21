@@ -78,8 +78,8 @@ class ItemRequestServiceIntegrationTest {
 
     @Test
     void getAllRequests_shouldReturnOtherUsersRequests() {
-        ItemRequestDto request1= itemRequestService.createRequest(requester.getId(), new ItemRequestDto("Нужна дрель"));
-        ItemRequestDto request2= itemRequestService.createRequest(owner.getId(), new ItemRequestDto("Нужен молоток"));
+        ItemRequestDto request1 = itemRequestService.createRequest(requester.getId(), new ItemRequestDto("Нужна дрель"));
+        ItemRequestDto request2 = itemRequestService.createRequest(owner.getId(), new ItemRequestDto("Нужен молоток"));
         List<ItemRequestDto> result = itemRequestService.getAllRequests(requester.getId());
 
         assertEquals(1, result.size());
@@ -88,9 +88,9 @@ class ItemRequestServiceIntegrationTest {
 
     @Test
     void getAllRequests_shouldNotReturnOwnRequests() {
-        ItemRequestDto request1= itemRequestService.createRequest(requester.getId(), new ItemRequestDto());
+        ItemRequestDto request1 = itemRequestService.createRequest(requester.getId(), new ItemRequestDto());
         request1.setDescription("Нужна дрель");
-        ItemRequestDto request2= itemRequestService.createRequest(requester.getId(), new ItemRequestDto());
+        ItemRequestDto request2 = itemRequestService.createRequest(requester.getId(), new ItemRequestDto());
         request2.setDescription("Нужен молоток");
         List<ItemRequestDto> result = itemRequestService.getAllRequests(requester.getId());
 
