@@ -18,4 +18,8 @@ public class ItemRequestDto {
     private LocalDateTime created;
 
     private List<ItemShortResponseDto> items = new ArrayList<>();
+
+    public ItemRequestDto(String description) {
+        this.description = description;
+    }
 }
